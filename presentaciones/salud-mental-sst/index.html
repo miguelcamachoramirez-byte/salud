@@ -191,7 +191,7 @@
       <div class="slide-inner">
         <div class="numero-slide">08</div>
         <h2>Juego: Equilibra el <span class="acento">Bienestar</span></h2>
-        <p class="jc-instrucciones">Mueve la base con el <strong>mouse</strong> (o las flechas ←→). Atrapa lo bueno 💚😊🧘, esquiva el estrés 💢😰🔥. ¡60 segundos!</p>
+        <p class="jc-instrucciones">Mueve la base con el <strong>mouse</strong> (o las flechas ←→). Atrapa lo bueno 💚😊🧘, esquiva el estrés 💢😰🔥. Tecla <strong>R</strong> para reiniciar. ¡30 segundos!</p>
         <canvas id="jc-canvas" width="900" height="420" aria-label="Juego de canvas: Equilibra el Bienestar"></canvas>
       </div>
     </section>
@@ -229,6 +229,13 @@
   <!-- Hint inicial -->
   <div id="hint">Click para avanzar &nbsp;·&nbsp; ← → para navegar &nbsp;·&nbsp; F para fullscreen</div>
 
-  <script src="slides.js?v=4"></script>
+  <script>
+    // Carga slides.js evitando el caché del navegador (útil mientras desarrollas)
+    (function () {
+      var s = document.createElement('script');
+      s.src = 'slides.js?nocache=' + Date.now();
+      document.body.appendChild(s);
+    })();
+  </script>
 </body>
 </html>

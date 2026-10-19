@@ -40,11 +40,11 @@
     getFragmentos(siguiente).forEach(f => f.classList.remove('visible'));
     stepActual = 0;
 
-    // AnimaciÃ³n salida
+    // Animación salida
     anterior.classList.add('saliendo');
     anterior.classList.remove('activo');
 
-    // Preparar entrada desde direcciÃ³n correcta
+    // Preparar entrada desde dirección correcta
     if (direccion === 'adelante') {
       siguiente.style.transform = 'translateX(60px)';
     } else {
@@ -81,9 +81,9 @@
       const proximo = siguientes[0];
       proximo.classList.add('visible');
       stepActual++;
-      return true; // ConsumiÃ³ el click en fragmento
+      return true; // Consumió el click en fragmento
     }
-    return false; // No hay mÃ¡s fragmentos, avanzar slide
+    return false; // No hay más fragmentos, avanzar slide
   }
 
   function siguiente() {
@@ -164,7 +164,7 @@
   function toggleFullscreen() {
     if (!document.fullscreenElement) {
       document.documentElement.requestFullscreen().catch(() => {});
-      btnFs.textContent = 'â›¶';
+      btnFs.textContent = '⛶';
       btnFs.title = 'Salir de fullscreen (Esc)';
     } else {
       document.exitFullscreen();
@@ -173,12 +173,12 @@
 
   document.addEventListener('fullscreenchange', () => {
     if (!document.fullscreenElement) {
-      btnFs.textContent = 'â›¶';
+      btnFs.textContent = '⛶';
       btnFs.title = 'Pantalla completa (F)';
     }
   });
 
-  // ===== Swipe (tÃ¡ctil) =====
+  // ===== Swipe (táctil) =====
   let touchStartX = 0;
   document.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
@@ -192,7 +192,7 @@
     }
   }, { passive: true });
 
-  // ===== Ocultar hint despuÃ©s de 4 segundos =====
+  // ===== Ocultar hint después de 4 segundos =====
   setTimeout(() => hint.classList.add('oculto'), 4000);
 
   // ===== Init =====
@@ -216,7 +216,7 @@ function initJuegoCanvas() {
 
   function reset() {
     base = { x: W / 2 - 55, y: H - 34, w: 110, h: 16 };
-    items = []; score = 0; tiempo = 60; acumSpawn = 0;
+    items = []; score = 0; tiempo = 30; acumSpawn = 0;
     estado = 'jugando'; ultimo = performance.now();
   }
 
@@ -285,7 +285,7 @@ function initJuegoCanvas() {
                                  'Cuidado: el estrés le ganó al equipo';
       ctx.fillText(msg, W / 2, H / 2 + 12);
       ctx.fillStyle = '#86efac'; ctx.font = 'bold 16px Poppins, sans-serif';
-      ctx.fillText('Clic para jugar de nuevo', W / 2, H / 2 + 48);
+      ctx.fillText('Presiona la tecla R para jugar de nuevo', W / 2, H / 2 + 48);
     }
   }
 
@@ -296,15 +296,18 @@ function initJuegoCanvas() {
     base.x = Math.max(0, Math.min(W - base.w, x - base.w / 2));
   }
   canvas.addEventListener('mousemove', (e) => { e.stopPropagation(); moverMouse(e); });
+  // Evita que el clic sobre el canvas avance de slide (el reinicio es con la tecla R)
   canvas.addEventListener('click', (e) => {
     e.stopPropagation();
-    if (estado === 'fin') { reset(); }
-  });
+    e.stopImmediatePropagation();
+    e.preventDefault();
+  }, true);
   const slideJuego = canvas.closest('.slide');
   document.addEventListener('keydown', (e) => {
     if (!slideJuego || !slideJuego.classList.contains('activo')) return;
     if (e.key === 'ArrowLeft') base.x = Math.max(0, base.x - 40);
     if (e.key === 'ArrowRight') base.x = Math.min(W - base.w, base.x + 40);
+    if (e.key === 'r' || e.key === 'R') reset(); // reinicio rápido para probar
   });
 
   reset();
